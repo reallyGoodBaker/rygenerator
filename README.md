@@ -138,7 +138,7 @@ constructor(source: string, target: string)
 #### prompt
 
 ```ts
-prompt(questionStr: string, hint?: string): Promise<string>
+var prompt: (questionStr: string, hint?: string) => Promise<string>
 ```
 
 
