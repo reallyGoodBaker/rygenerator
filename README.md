@@ -6,7 +6,7 @@
 
 ## 快速上手
 
-```bash
+```sh
 npm i reallygoodbaker-generator -g
 ```
 
@@ -16,13 +16,13 @@ npm i reallygoodbaker-generator -g
 
 你也可以做自己的生成器：
 
-```bash
+```sh
 npm i rygenerator-rygenerator -g
 ```
 
 安装完成后，在你想要生成的位置运行：
 
-```bash
+```sh
 rygen rygenerator
 ```
 
@@ -61,4 +61,10 @@ async function main(generator) {
     //Your code here
 }
 ```
+
+
+
+
+
+## API
 
