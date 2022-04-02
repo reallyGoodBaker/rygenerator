@@ -66,5 +66,120 @@ async function main(generator) {
 
 
 
-## API
+## APIs
+
+所有api通过引入 `reallygoodbaker-generator` 获得
+
+### closeStdin
+
+```ts
+function closeStdin(): void
+```
+
+关闭输入流
+
+
+
+### question
+
+```ts
+function question(questionStr: string): Promise<string>
+```
+
+向控制台输出 questionStr , 并返回用户输入的串
+
+
+
+### Colors
+
+```ts
+enum Colors {
+    black, red, green, yellow,
+    blue, magenta, cyan, white
+}
+```
+
+颜色的枚举值
+
+
+
+### style
+
+```ts
+function style(color: Colors, data: string, light?: boolean): string
+```
+
+返回具有特殊样式的字符串
+
+`color`  颜色
+
+`data`   需要上色的字符串
+
+`light` 	使用亮色
+
+
+
+### Generator
+
+
+
+#### `constructor`
+
+```ts
+constructor(source: string, target: string)
+```
+
+`source`	脚手架的路径
+
+`target`	目标文件夹的路径
+
+
+
+#### prompt
+
+```ts
+function prompt(questionStr: string, hint?: string): Promise<string>
+```
+
+
+
+#### say
+
+```ts
+function say(msg: string, color?: Colors): void
+```
+
+
+
+#### template
+
+```ts
+function template(...templates: string[]): Generator
+```
+
+
+
+#### exclude
+
+```ts
+function exclude(...excludes: string[]): Generator
+```
+
+
+
+#### installDependencies
+
+```ts
+function installDependencies(): void
+```
+
+
+
+#### generate
+
+```ts
+function generate(obj: any): Promise<any>
+```
+
+
 
