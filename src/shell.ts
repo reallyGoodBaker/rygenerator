@@ -1,5 +1,5 @@
 import { Colors, closeStdin, question, selectionList, style } from './interact'
-import { compileTemplateFile, compileTemplateString } from './template'
+import { compileTemplateString } from './template'
 const stdout = process.stdout
 import * as child_process from 'child_process'
 import { FileLike } from './flike'
