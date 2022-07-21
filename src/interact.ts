@@ -1,13 +1,12 @@
 const stdin = process.stdin;
 const stdout = process.stdout;
 
-export enum Colors {
-    black, red, green, yellow,
-    blue, magenta, cyan, white
-}
+import {Colors, message} from 'styled-message'
+
+export {Colors} from 'styled-message'
 
 export function style(color: Colors, data: string, light = false) {
-    return `\x1b[${light ? color + 90 : color + 30}m${data}\x1b[0m`;
+    return message(data).color(color, light).toString()
 }
 
 export function question(questionStr: string): Promise<string> {

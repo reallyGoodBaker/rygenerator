@@ -2,6 +2,7 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
+var styledMessage = require('styled-message');
 var fs = require('fs');
 var child_process = require('child_process');
 var path = require('path');
@@ -30,19 +31,8 @@ var path__namespace = /*#__PURE__*/_interopNamespace(path);
 
 const stdin = process.stdin;
 const stdout$1 = process.stdout;
-exports.Colors = void 0;
-(function (Colors) {
-    Colors[Colors["black"] = 0] = "black";
-    Colors[Colors["red"] = 1] = "red";
-    Colors[Colors["green"] = 2] = "green";
-    Colors[Colors["yellow"] = 3] = "yellow";
-    Colors[Colors["blue"] = 4] = "blue";
-    Colors[Colors["magenta"] = 5] = "magenta";
-    Colors[Colors["cyan"] = 6] = "cyan";
-    Colors[Colors["white"] = 7] = "white";
-})(exports.Colors || (exports.Colors = {}));
 function style(color, data, light = false) {
-    return `\x1b[${light ? color + 90 : color + 30}m${data}\x1b[0m`;
+    return styledMessage.message(data).color(color, light).toString();
 }
 function question(questionStr) {
     return new Promise((res, rej) => {
@@ -112,7 +102,7 @@ class MultiSelectionList extends List {
         super(...arguments);
         this.selected = new Set();
         /**@override */
-        this.listTileBuilder = (li, focus) => focus ? style(exports.Colors.yellow, `-> ${li}\n`, true) : `   ${li}\n`;
+        this.listTileBuilder = (li, focus) => focus ? style(styledMessage.Colors.yellow, `-> ${li}\n`, true) : `   ${li}\n`;
     }
     focus(index = 0) {
         if (this.selected.has(index))
@@ -135,7 +125,7 @@ class RadioList extends List {
         super(...arguments);
         this.selected = 0;
         /**@override */
-        this.listTileBuilder = (li, focus) => focus ? style(exports.Colors.yellow, `-> ${li}\n`, true) : `   ${li}\n`;
+        this.listTileBuilder = (li, focus) => focus ? style(styledMessage.Colors.yellow, `-> ${li}\n`, true) : `   ${li}\n`;
     }
     focus(index = 0) {
         this.selected = index;
@@ -150,7 +140,7 @@ class RadioList extends List {
         stdout$1.write(`\n${this.footer}`);
     }
 }
-function selectionList(arr, hint = `Use ${style(exports.Colors.cyan, 'Arrow Up/Down')} to move cursor & ${style(exports.Colors.cyan, 'Enter')} to select`) {
+function selectionList(arr, hint = `Use ${style(styledMessage.Colors.cyan, 'Arrow Up/Down')} to move cursor & ${style(styledMessage.Colors.cyan, 'Enter')} to select`) {
     let selected = 0;
     stdout$1.write(`\n${hint}\n\n`);
     const clearList = () => {
@@ -161,7 +151,7 @@ function selectionList(arr, hint = `Use ${style(exports.Colors.cyan, 'Arrow Up/D
     const buildList = () => {
         arr.forEach((li, i) => {
             stdout$1.write(selected === i ?
-                `${style(exports.Colors.yellow, '-> ' + li, true)}\n` : `   ${li}\n`);
+                `${style(styledMessage.Colors.yellow, '-> ' + li, true)}\n` : `   ${li}\n`);
         });
     };
     buildList();
@@ -250,7 +240,7 @@ class TemplateCompiler {
     async onPropsInNeed(propNames) {
         let obj = {};
         for (const name of propNames) {
-            obj[name] = await question(`Input a value for ${style(exports.Colors.cyan, name, true)}: `);
+            obj[name] = await question(`Input a value for ${style(styledMessage.Colors.cyan, name, true)}: `);
         }
         return obj;
     }
@@ -309,10 +299,10 @@ class Generator {
         this.target = target;
     }
     async prompt(questionStr, hint) {
-        return await question(style(exports.Colors.white, questionStr) +
-            (hint ? style(exports.Colors.black, ` (${hint}): `, true) : ''));
+        return await question(style(styledMessage.Colors.white, questionStr) +
+            (hint ? style(styledMessage.Colors.black, ` (${hint}): `, true) : ''));
     }
-    say(msg, color = exports.Colors.white) {
+    say(msg, color = styledMessage.Colors.white) {
         stdout.write(style(color, msg) + '\n');
     }
     include(...includes) {
@@ -328,17 +318,17 @@ class Generator {
         return this;
     }
     installDependencies() {
-        this.say('Installing dependencies...', exports.Colors.cyan);
+        this.say('Installing dependencies...', styledMessage.Colors.cyan);
         child_process__namespace.exec('npm i', (err, out) => {
             if (err) {
-                this.say('Installation failed.\n' + err.stack, exports.Colors.red);
+                this.say('Installation failed.\n' + err.stack, styledMessage.Colors.red);
                 return;
             }
             this.say(out);
-            this.say('Installation finished.', exports.Colors.cyan);
+            this.say('Installation finished.', styledMessage.Colors.cyan);
         });
     }
-    async generate(obj) {
+    async generate(obj = {}) {
         let excludes = this.excludes.reduce((pre, cur) => {
             return [...pre, new RegExp(cur)];
         }, []);
@@ -366,7 +356,7 @@ class Generator {
                 if (regExp.test(src))
                     continue forloop;
             }
-            let dataStr = String(fs__namespace.readFileSync(src));
+            let dataStr = fs__namespace.readFileSync(src).toString();
             //template
             for (const t of this.templates) {
                 if (src.endsWith(t))
@@ -377,6 +367,10 @@ class Generator {
     }
 }
 
+Object.defineProperty(exports, 'Colors', {
+    enumerable: true,
+    get: function () { return styledMessage.Colors; }
+});
 exports.Generator = Generator;
 exports.List = List;
 exports.MultiSelectionList = MultiSelectionList;

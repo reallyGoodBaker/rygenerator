@@ -19,7 +19,7 @@ export class Template {
         let resArr: RegExpExecArray;
         let ids: Expr[] = [];
 
-        while (resArr = regExp.exec(this.rawString)) {
+        while (resArr = regExp.exec(this.rawString)!) {
             ids.push({
                 expr: resArr[1],
                 index: resArr.index

@@ -60,8 +60,8 @@ export class Generator {
         })
     }
 
-    async generate(obj: any) {
-        let excludes = this.excludes.reduce((pre, cur) => {
+    async generate(obj: any = {}) {
+        let excludes = this.excludes.reduce((pre: RegExp[], cur) => {
             return [...pre, new RegExp(cur)]
         }, [])
         let fileSplitted = this.source.split(/[\/\\]/g)
@@ -89,7 +89,7 @@ export class Generator {
                 if (regExp.test(src)) continue forloop
             }
             
-            let dataStr = String(fs.readFileSync(src))
+            let dataStr = fs.readFileSync(src).toString()
             //template
             for (const t of this.templates) {
                 if (src.endsWith(t)) dataStr = await compileTemplateString(dataStr, data, this.onPrompt)

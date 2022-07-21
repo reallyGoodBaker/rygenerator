@@ -12,7 +12,7 @@ const generatorPath = path.resolve(RootDir, `${requireGenerator}-rygenerator`);
 
 try {
     const Generator = require(generatorPath);
-    Generator(generatorPath, process.cwd());
+    Generator(generatorPath, process.cwd(), process.argv.slice(3));
 } catch (error) {
     question(
         style(Colors.red, `\nUnable to generate target with "${requireGenerator}-rygenerator". \n`) + 

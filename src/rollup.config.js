@@ -8,7 +8,7 @@ export default {
         format: 'cjs'
     },
     external: [
-        'fs', 'child_process', 'path'
+        'fs', 'child_process', 'path', 'styled-message'
     ],
     plugins: [
         ts({
